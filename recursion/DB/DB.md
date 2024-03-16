@@ -51,10 +51,192 @@ user の email が更新された場合、user のクレジットカード、住
   例: a さんがアプリ内で障害を起こし、サポートセンターに連絡した。サポートセンターは、a さんのサポートに必要なデータを取得することはできるが、それ以外のデータにはアクセスできないようになっている。
   ↓
   a <-> user データ(全てのデータ取得)
-  people support a さん <-> support_user(サポートに必要なデータのみ取得)
+  people support a さん <-> support_user(サポートに必要なデータのみ取得
 
 ### DB の内部
 
 - query processor: SQL 言語を解釈して低層に命令するために使われる
 - SQL 言語は DDL(data-definition language == データ定義言語)//データの集合に紐づけられている規則(userDB と productDB を繋げるって ruby でやったじゃん。)
   DML(data-manipulation language == データ操作言語)//データを追加、アクセス、操作ができる
+
+##################################
+#########"DBのセットアップ"###############
+##################################
+% mysql -u root -p
+% CREATE USER 'your_user_name'@'localhost' IDENTIFIED BY 'your_password';
+% GRANT ALL PRIVILEGES ON %.* TO 'your_user_name'@'localhost';
+または、
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'user1'@'localhost';
+
+
+mysql> CREATE DATABASE db01
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SHOW DATABASE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DATABASE' at line 1
+mysql> SHOW DATABASEs;
++--------------------+
+| Database           |
++--------------------+
+| db01               |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> USE db01;
+Database changed
+mysql> SHOW DATABASEs;
++--------------------+
+| Database           |
++--------------------+
+| db01               |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> DROP DATABASE db01
+    -> ;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SHOW DATABASEs;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE DATABASE test_db;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SHOW DATABASEs;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test_db            |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> USE test_db;
+Database changed
+mysql> SHOW DATABASEs;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test_db            |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE departments (id INT, name VARCHAR(255), start_date DATE);
+mysql> SHOW TABLES FROM test_db;
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| departments       |
++-------------------+
+1 row in set (0.00 sec)
+mysql> show create table departments;
++-------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table       | Create Table                                                                                                                                                                                  |
++-------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| departments | CREATE TABLE `departments` (
+  `id` int DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `start_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+##################################
+#########"indexを設定"###############
+##################################
+mysql> mysql> ALTER TABLE departments ADD INDEX id_index(id);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'departments ADD INDEX id_index(id)' at line 1
+mysql> ALTER TABLE departments ADD INDEX id_index(id);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW INDEX FROM departments;
++-------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table       | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| departments |          1 | id_index |            1 | id          | A         |           0 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++-------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+1 row in set (0.01 sec)
+##################################
+############"制約"####################
+##################################
+##"↑これによってid_indexを一意の保証する主キーとして設定する事ができる"<-制約という。#####################
+- 主キー(メインのDBのid)と外部キーのidのindexは必ず同じ値である必要がある。
+- 主キーのデータは、外部キーのtableにあるデータを先に削除しない限り、削除することはできない。
+↓
+実際のテーブルの繋げ方。
+% CREATE TABLE authors (id INT PRIMARY KEY);
+% CREATE TABLE books (id INT, author_id INT, FOREIGN KEY 
+% author_fk(author_id) REFERENCES authors(id));
+##################################
+############"TABLEの更新/削除"####################
+##################################
+% ALTER TABLE current_name change_name
+(change_name: -table名,culumn名,index名,add culumn,delete culumnなど色々当てはまるここに。);
+- table名の変更
+% ALTER TABLE table_name RENAME TO new_table_name;
+- table内のidカラムをBIGINTへ&それを一意制約にする
+% ALTER TABLE new_departments MODIFY id BIGINT
+- カラムの削除
+% ALTER TABLE table_name DROP column_name;
+
+##################################
+############"データをTABLEに挿入"####################
+##################################
+mysql> CREATE TABLE products(id INT, name VARCHAR(255) NOT NULL);
+Query OK, 0 rows affected (0.02 sec)
+mysql> INSERT INTO products (id, name) VALUES (1, 'バナソニックレンジ'), (2, 'ゾニーカメラ'), (3, 'とうじばエアコン'), (4, 'シャーブテレビ');
+mysql> SELECT products.id, products.name FROM products;
+↑"これでもいいけど、全部のカラムを出力したい時は*を使用して書く事ができる"↓
+mysql> SELECT products.* FROM products;
++------+-----------------------------+
+| id   | name                        |
++------+-----------------------------+
+|    1 | バナソニックレンジ          |
+|    2 | ゾニーカメラ                |
+|    3 | とうじばエアコン            |
+|    4 | シャーブテレビ              |
++------+-----------------------------+
+4 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
