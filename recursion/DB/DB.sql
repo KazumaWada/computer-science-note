@@ -222,8 +222,46 @@ mysql> SELECT products.* FROM products;
 +------+-----------------------------+
 4 rows in set (0.00 sec)
 
+# 参照関係
+- 主keyと外部keyが一つのtableにある感じ。
+- 2つのtableを繋げる中間テーブル(intermediate table)というのも存在する。お互いのidを中間テーブルに格納する
 
+-- users テーブルを作成
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
 
+-- posts テーブルを作成
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- comments テーブルを作成
+CREATE TABLE comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+    comment TEXT,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+参照されたテーブルのレコードが削除された場合に関連するテーブルのレコードも削除するように設定しています (ON DELETE CASCADE)。
+もし、中間テーブルを使ったらこうなる↓
+-- car_part_relationship テーブルを作成
+CREATE TABLE car_part_relationship (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    car_id INT NOT NULL,
+    part_id INT NOT NULL,
+    FOREIGN KEY (car_id) REFERENCES cars(id) ON DELETE CASCADE,
+    FOREIGN KEY (part_id) REFERENCES car_parts(id) ON DELETE CASCADE
+);
 
 
 
