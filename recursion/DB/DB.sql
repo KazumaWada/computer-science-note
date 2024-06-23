@@ -1,3 +1,8 @@
+mysql -u root -p
+use mydatabase;
+SELECT departments.* FROM departments;
+
+
 # DBMS(Database Management System)
 
 - 全ての DB の機能を抽象化したシステム
