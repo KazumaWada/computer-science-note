@@ -1,4 +1,7 @@
 # キャッシュのクリア
+docker builder prune --all --force  
+docker system prune 
+docker system prune --all --volumes --force
 Dockerを使用してアプリケーションをビルドおよび実行する際に、問題が発生することがある場合、キャッシュや過去のイメージをクリアすることが助けになることがあります。具体的には、以下のようなケースが考えられます：
 
 1. キャッシュのクリア
