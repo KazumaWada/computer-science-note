@@ -5,6 +5,8 @@
 じゃあ、promiseを使って実際にどうやってデータを待てるか?
 promise(コーヒーを頼んだ).then(コーヒーが来たら)と.catch(コーヒーが来なかったら)
 
+promise.all: コード内に複数の非同期処理を書く時に使用する。まとめて書くことで、待ち時間を省略することができる。
+
 ## await(簡単.一つの非同期処理を描くのに適している)
 (wait for promise. only using in async function)
 promiseの簡単バージョン。asyncをコードの前に追加するだけだから、普通のコードのような感じで可読性が上がる。
