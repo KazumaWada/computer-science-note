@@ -1,6 +1,7 @@
-async: 非同期関数を定義する。
-await: Promiseの解決を待つ。
-try...catch構文を使ってエラーをハンドリングする。
+## 基本的に外部のコードと通信するときは全て非同期で書くからnodeはほとんど非同期で書かれる。
+async: 非同期関数を定義する。<br>
+await: Promiseの解決を待つ。<br>
+try...catch構文を使ってエラーをハンドリングする。<br>
 
 ![1](https://github.com/user-attachments/assets/be76fe6d-148d-4e94-ac76-9e19525561df)
 
