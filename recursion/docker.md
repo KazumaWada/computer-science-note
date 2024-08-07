@@ -1,3 +1,5 @@
+docker compose up -d<br>
+docker compose up --build 
 # キャッシュのクリア
 docker builder prune --all --force  
 docker system prune <br>
