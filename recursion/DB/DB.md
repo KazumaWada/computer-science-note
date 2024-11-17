@@ -3,6 +3,18 @@
   psql -U myuser -d myapp_development
 - 現在の接続を確認
 - SELECT pid, usename, state, query FROM pg_stat_activity WHERE datname = 'myapp_development';
+- 全てのセッションを終了する
+1.まずどれが起動しているか確認
+SELECT pid, usename, state, query
+FROM pg_stat_activity
+WHERE datname = 'myapp_development';
+2.削除
+ SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE datname = 'myapp_development'
+  AND pid <> pg_backend_pid();
+ pg_terminate_backend
+これで、"0row"と表示されれば全部消えた。
 - 特定のセッションを終了する
 SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'myapp_development';
 
