@@ -1,3 +1,8 @@
+# PostgresSQL
+- ログイン書き方
+  psql -U myuser -d myapp_development
+# MySQL
+  
 mysql -u root -p
 use mydatabase;
 SELECT departments.* FROM departments;
