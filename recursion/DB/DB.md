@@ -1,6 +1,11 @@
 # PostgresSQL
 - ログイン書き方
   psql -U myuser -d myapp_development
+- 現在の接続を確認
+- SELECT pid, usename, state, query FROM pg_stat_activity WHERE datname = 'myapp_development';
+- 特定のセッションを終了する
+SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'myapp_development';
+
 # MySQL
   
 mysql -u root -p
