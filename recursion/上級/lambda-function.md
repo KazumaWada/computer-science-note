@@ -1,3 +1,4 @@
+紙のノート: https://kazumawada.notion.site/1a2d450fb35d809aa215d43d46a85dbc?pvs=4
 - 関数名がない。一行で return まで書かれている。(Supplier<String> lambda1 = () -> { return "A new world";};)
 
 ```java
