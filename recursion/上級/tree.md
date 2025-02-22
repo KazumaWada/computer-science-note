@@ -1,4 +1,5 @@
 # tree
+紙のメモ: https://kazumawada.notion.site/1a2d450fb35d80ad9aa3d5b61f7af0a4?pvs=4
 
 - graph(同じ頂点に戻る)、tree(同じ頂点に戻らない),頂点(または Node), 辺(linked-list でいう prev,next)
 - 二本木(binary tree)を使って、sort と search を効果的に実装できるようになる。
