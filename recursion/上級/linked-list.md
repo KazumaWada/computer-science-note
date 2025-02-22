@@ -1,5 +1,7 @@
 # Data Structure
 
+紙のノート: https://kazumawada.notion.site/Linked-list-1a2d450fb35d80eeb24ac6329f123eca?pvs=4
+
 data structure
 
 - list[]
