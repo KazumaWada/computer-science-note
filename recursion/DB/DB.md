@@ -25,6 +25,33 @@ postgres=# \q
 # pwdコマンド的な
 postgres=# \c
 You are now connected to database "postgres" as user "kazumawada".
+
+# DB作成
+postgres=# CREATE DATABASE sales;
+
+# 操作しているユーザーを見る
+postgres=# \du
+                                    List of roles
+ Role name  |                         Attributes                         | Member of 
+------------+------------------------------------------------------------+-----------
+ kazumawada | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+# ユーザーを新たに作成する
+postgres=# CREATE ROLE geek WITH LOGIN PASSWORD 'hogehoge';
+CREATE ROLE
+postgres=# \du
+                                    List of roles
+ Role name  |                         Attributes                         | Member of 
+------------+------------------------------------------------------------+-----------
+ geek       |                                                            | {}
+ kazumawada | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+# 接続権を貸与
+postgres=# GRANT CONNECT ON DATABASE geek_system TO geek;
+GRANT
+# 全権利を貸与
+postgres=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO geek;
+GRANT
   
 ```
 
