@@ -21,6 +21,10 @@
 
 # ログアウト
 postgres=# \q
+
+# pwdコマンド的な
+postgres=# \c
+You are now connected to database "postgres" as user "kazumawada".
   
 ```
 
