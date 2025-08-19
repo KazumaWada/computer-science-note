@@ -5,6 +5,21 @@
   <br>ユーザー名も決まっていない場合は、一般的にpsql -U postgres -d postgresでok.
   <br>MacのローカルでDBを実行していく場合は、初回のyour_usernameはローカルの自分の名前
 
+- DBを見る
+```sql
+  postgres=# \l
+                                List of databases
+   Name    |   Owner    | Encoding | Collate | Ctype |     Access privileges     
+-----------+------------+----------+---------+-------+---------------------------
+ postgres  | kazumawada | UTF8     | C       | C     | 
+ template0 | kazumawada | UTF8     | C       | C     | =c/kazumawada            +
+           |            |          |         |       | kazumawada=CTc/kazumawada
+ template1 | kazumawada | UTF8     | C       | C     | =c/kazumawada            +
+           |            |          |         |       | kazumawada=CTc/kazumawada
+(3 rows)
+  
+```
+
   次回以降は、
   psql -U username -d dbname -h hostname
 - 現在の接続を確認
