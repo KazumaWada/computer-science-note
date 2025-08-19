@@ -4,6 +4,7 @@
   <br>(DBはまだ存在しないので、"postgres"でログイン. ログイン後にDB作れる)
   <br>ユーザー名も決まっていない場合は、一般的にpsql -U postgres -d postgresでok.
   <br>MacのローカルでDBを実行していく場合は、初回のyour_usernameはローカルの自分の名前
+  <br>これでもできる: $ psql -U postgres
 
 - DBを見る
 ```sql
@@ -17,6 +18,9 @@
  template1 | kazumawada | UTF8     | C       | C     | =c/kazumawada            +
            |            |          |         |       | kazumawada=CTc/kazumawada
 (3 rows)
+
+# ログアウト
+postgres=# \q
   
 ```
 
