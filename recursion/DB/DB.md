@@ -1,6 +1,12 @@
 # PostgresSQL
 - ログイン書き方
-  psql -U myuser -d myapp_development
+  初回の場合: psql -U your_username -d postgres
+  <br>(DBはまだ存在しないので、"postgres"でログイン. ログイン後にDB作れる)
+  <br>ユーザー名も決まっていない場合は、一般的にpsql -U postgres -d postgresでok.
+  <br>MacのローカルでDBを実行していく場合は、初回のyour_usernameはローカルの自分の名前
+
+  次回以降は、
+  psql -U username -d dbname -h hostname
 - 現在の接続を確認
 - SELECT pid, usename, state, query FROM pg_stat_activity WHERE datname = 'myapp_development';
 - 全てのセッションを終了する
