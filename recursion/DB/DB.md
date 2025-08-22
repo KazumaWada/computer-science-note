@@ -26,6 +26,12 @@ postgres=# \q
 postgres=# \c
 You are now connected to database "postgres" as user "kazumawada".
 
+# 使用するDBの変更
+postgres=> \c
+You are now connected to database "postgres" as user "geek".
+postgres=> \c geek_system
+You are now connected to database "geek_system" as user "geek".
+
 # DB作成
 postgres=# CREATE DATABASE sales;
 
