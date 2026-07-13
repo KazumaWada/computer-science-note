@@ -1,3 +1,9 @@
+- docker compose down -v: このプロジェクトのコンテナ・ネットワーク・ボリューム(DBデータ含む)を削除
+- docker system prune -a --volumes -f: 使っていない全てのコンテナ・イメージ・ボリューム・ビルドキャッシュをMac上から一括削除
+- docker builder prune -a -f: ビルドキャッシュを完全に削除
+
+
+
 docker compose down && docker compose build --no-cache && docker compose up -d
 
 docker compose up -d<br>
