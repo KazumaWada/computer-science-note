@@ -88,3 +88,101 @@ int main() {
 
 ```
 
+# C002(10/11/2026)
+
+```C
+// TOPIC: constの書き方
+
+int main() {
+    int x = 5;
+    x = 10; // this is ok
+}
+
+int main() {
+    const int x = 5;
+    x = 10; // error
+}
+
+// TOPIC: fucntionの書き方
+#include <stdio.h>
+
+// ?
+int max_sneklang_memory(int max_threds, int memory_per_thread){
+  return (int)(memory_per_thread * max_threds);
+}
+
+// don't touch below this line
+
+void init_sneklang(int max_threads, int memory_per_thread) {
+  printf("Initializing Sneklang\n");
+  printf("Max threads: %d\n", max_threads);
+  printf("Memory per thread: %d\n", memory_per_thread);
+  int max_memory = max_sneklang_memory(max_threads, memory_per_thread);
+  printf("Max memory: %d\n", max_memory);
+  printf("====================================\n");
+}
+
+int main() {
+  init_sneklang(4, 512);
+  init_sneklang(8, 1024);
+  init_sneklang(16, 2048);
+  return 0;
+}
+
+// TOPIC: 平均を出す関数の書き方
+#include "exercise.h"
+#include <stdio.h>
+  
+float get_average(int x, int y, int z){
+  float result = (x + y + z) / 3.0;
+  printf("%f\n", result);  
+  return result;  
+}
+
+// TOPIC: 条件分岐
+#include "exercise.h"
+#include <stdio.h>
+
+char *get_temperature_status(int temp){
+  if(temp < 70){
+    return "too cold";
+  }else if(temp > 90){
+    return "too hot";
+  }else{
+    return "just right";
+  }
+};
+
+// TOPIC: If statementでは、return: 1がtruedで0がfalseになっている。
+#include "exercise.h"
+
+int can_access_registry(int is_premium, int reputation, int has_2fa){
+  if(is_premium == 1 || reputation >= 100 && has_2fa == 1){
+    return 1;
+  }
+  return 0;
+};
+
+// TOPIC: それぞれのtypeのサイズが見れる
+#include <stdbool.h>
+#include <stdio.h>
+
+int main() {
+  // Use %zu for printing `sizeof` result
+  printf("sizeof(char)   = %zu\n", sizeof(char));
+    printf("sizeof(bool)   = %zu\n", sizeof(bool));
+  printf("sizeof(int)   = %zu\n", sizeof(int));
+    printf("sizeof(float)   = %zu\n", sizeof(float));
+
+  printf("sizeof(double)   = %zu\n", sizeof(double));
+  printf("sizeof(size_t)   = %zu\n", sizeof(size_t));
+}
+
+
+sizeof(char)   = 1
+sizeof(bool)   = 1
+sizeof(int)   = 4
+sizeof(float)   = 4
+sizeof(double)   = 8
+sizeof(size_t)   = 4
+```
