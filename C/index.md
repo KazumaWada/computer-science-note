@@ -186,3 +186,59 @@ sizeof(float)   = 4
 sizeof(double)   = 8
 sizeof(size_t)   = 4
 ```
+
+# C003(10/13/2026)
+
+```C
+
+// TOPIC: Loop
+
+#include <stdio.h>
+void print_numbers(int start, int end);
+
+
+void print_numbers(int start, int end){
+  for(int i = start; i <= end; i++){
+    printf("%d\n", i);
+  }
+}
+
+// TOPIC: while loop
+#include <stdio.h>
+
+void print_numbers_reverse(int start, int end){
+  int i = start;
+  while(i >= end){
+    printf("%d\n", i);
+    i--;
+  }
+  
+}
+
+// TOPIC: struct(データの塊。JSでいうオブジェクトみたいな感じ。)挙動はない。ただのデータの集まりだけ。
+// structureを短くしただけのもの。だからそのまま「構造」」の意味になっている。
+
+struct Human {
+    int age;
+    char *name;
+    int is_alive;
+};
+
+// TOPIC: structにデータを入れるときの書き方
+#include "coord.h"
+
+struct Coordinate new_coord(int x, int y, int z) {
+return (struct Coordinate){.x = x, .y = y, .z = z};
+}
+
+// または
+struct Coordinate new_coord(int x, int y, int z) {
+  struct Coordinate c;
+  c.x = x;
+  c.y = y;
+  c.z = z;
+  return c;
+}
+
+
+```
