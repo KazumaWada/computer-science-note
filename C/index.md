@@ -240,5 +240,73 @@ struct Coordinate new_coord(int x, int y, int z) {
   return c;
 }
 
+```
+
+# C004(10/21/2026)
+
+```c
+#pragma once
+
+struct Coordinate {
+  int x;
+  int y;
+  int z;
+};
+
+struct Coordinate new_coord(int x, int y, int z);
+
+struct Coordinate scale_coordinate(struct Coordinate coord, int factor);
+
+↓
+
+#include "coord.h"
+
+struct Coordinate new_coord(int x, int y, int z) {
+  struct Coordinate coord = {.x = x, .y = y, .z = z};
+  return coord;
+}
+
+struct Coordinate scale_coordinate(struct Coordinate coord, int factor) {
+  struct Coordinate scaled = coord;
+  scaled.x *= factor;
+  scaled.y *= factor;
+  scaled.z *= factor;
+  return scaled;
+}
+
+// 一度宣言したらstructを省略して書くことができる。typedef struct .. coordinate_t
+#pragma once
+
+typedef struct {
+  int x;
+  int y;
+  int z;
+} coordinate_t;
+
+coordinate_t new_coord(int x, int y, int z);
+coordinate_t scale_coordinate(coordinate_t coord, int factor);
+
+↓
+
+#include "coord.h"
+
+coordinate_t new_coord(int x, int y, int z) {
+  coordinate_t coord = {.x = x, .y = y, .z = z};
+
+  return coord;
+}
+
+coordinate_t scale_coordinate(coordinate_t coord, int factor) {
+  coordinate_t scaled = coord;
+  scaled.x *= factor;
+  scaled.y *= factor;
+  scaled.z *= factor;
+
+  return scaled;
+}
+
+// 4byteごとにpaddingで調節している。1byteだったら3byte分paddingが作成されて調節される。
+// (https://en.wikipedia.org/wiki/Data_structure_alignment)
+
 
 ```
