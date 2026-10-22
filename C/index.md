@@ -310,3 +310,71 @@ coordinate_t scale_coordinate(coordinate_t coord, int factor) {
 
 
 ```
+
+# C005(10/22/2026)
+```C
+// なぜPaddingが存在しているのか
+- CPUがメモリを読む。
+- そしてCPUはメモリを単位ごとにしか読まない。1byteずつ読むわけではない。(4byteずつ、8byteずつ etc..)
+- だからメモリにデータが入った時に、次の単位までの空きがある場合、paddingを入れてCPUが次のデータを読めるようにしている
+
+番地4から置いた場合(区切りに揃っている)
+番地:   0  1  2  3 | 4  5  6  7
+                     [  int   ]   ← 1回読めば取れる
+
+番地1から置いた場合(区切りをまたいでいる)
+番地:   0  1  2  3 | 4  5  6  7
+           [  int  ...  ]          ← 2回読んで、つなぎ合わせる必要がある
+
+区切りをまたぐと、次のどれかになります。
+- 2回読んでつなぎ合わせることになり、遅くなる
+- CPU によってはそもそも読めず、プログラムが落ちる(古い ARM など)
+
+↓
+だからコンパイラが自動でずらす。
+
+、、つまり、メモリを少し無駄にする代わり、CPUが高速で早く読めるようにしたものがpadding
+
+// なぜCPUは「区切り単位」でしか読まないのか？
+物理的な作りの話で、CPUとメモリをつなぐハードウェアが、「区切り単位」で運ぶように最初から作られているから。
+「ハードはシンプルで速くしておいて、置き場所の調整はソフト側(コンパイラ)に任せる。paddingで」
+
+> Compilers + modern hardware + optimizations + skill issues means that sometimes what you think the computer is going to do isn't exactly what it actually does. That said, C is designed to get you close to the machine and allows you to dig in and figure out what's going on if you want to for a specific compiler or architecture.
+
+> As a rule of thumb, ordering your fields from largest to smallest will help the compiler minimize padding
+経験則として、大きいサイズの型から、小さいサイズの型の順番に並べると、paddingが少ない数使われて良い。
+大体大きい型は、CPUが読むサイズになっている塊のサイズになっていることが多いから。(8,4,2,1Byte)
+
+↓
+
+typedef struct {
+  char* a;
+  double b;
+  char c;
+  char d;
+  long e;
+  char f;
+} poorly_aligned_t;
+
+typedef struct {
+  double b;
+  long e;
+  char* a;
+  char c;
+  char d;
+  char f;
+} better_t;
+
+
+// TOPIC: Memory
+// &: このデータが入っているメモリのアドレスを表示することができる。
+// %p: pointer
+#include <stdio.h>
+
+int main() {
+  int age = 37;
+  printf("The address of age is: %p\n", (void *)&age);
+  return 0;
+}
+// The address of age is: 0xfff8
+```
