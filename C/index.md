@@ -378,3 +378,54 @@ int main() {
 }
 // The address of age is: 0xfff8
 ```
+
+# C006(10/23/2026)
+```c
+// &でアドレスの位置を取得して、
+
+// *
+  char* a;
+  double b;
+  char c;
+  char d;
+  long e;
+  char f;
+// Cには「文字列」という概念がないから、charだとメモリにある最初のaddressを取得してきて持っておくように書かれている。(そもそもcharには一文字しか入らない)
+
+
+#include "snek.h"
+#include <stdio.h>
+// boot.devでは、住所（ポインタ）が4Byteで格納されることになっている。
+// そしてiのaddressをpで取得している。
+// だから結局returnでpを見ると毎回4byteになる。
+// 全く意味がわからない関数になっているけど、これは学習用に彼らが設定していることだから仕方がない。
+unsigned long size_of_addr(long long i) {
+  long long *p = &i;
+  return sizeof(p);
+}
+
+// Addressに書かれている数字の話
+- addressはただの数字。でもhexadecimalって記法で書かれているから、「0xfff8」みたいな書き方になる。
+見慣れている数字に直すと65,528になる。
+
+// Virtual Memory
+- 自分が書いたコードは直接RAMにアクセスはせずにOSが指示してVirtual Memoryが間に挟まっている。
+- Physivcal Memory: 実際にRAMに書かれているメモリのデータ。
+- でもCでOSを返さなかったら、直接RAMを触っているという例外も存在する。
+
+コード->OS
+コード<-OS(コイツやばい返す)
+コード->VM->RAM
+
+OSがやってるcoolなこと
+- メモリは使っていたら、必ず他のメモリを割り当てる
+- 特定の大事なメモリにはアクセスさせない。
+- 開発者はこれらのことを一切気にしなくていい。
+- メモリにただ入れているわけではなくて、調節しながらよしなにやってくれる。
+
+
+// Pointer
+Put simply: a pointer is just a variable that stores a memory address. 
+pointerはメモリのアドレスを指した変数。シンプル。指してる。ポインティングしてる。シンプル。
+
+```
