@@ -429,3 +429,19 @@ Put simply: a pointer is just a variable that stores a memory address.
 pointerはメモリのアドレスを指した変数。シンプル。指してる。ポインティングしてる。シンプル。
 
 ```
+
+# C007(10/31/2026)
+```c
+#include "coordinate.h"
+
+// もちろんここは宣言しているだけ。
+void coordinate_update_x(coordinate_t coord, int new_x) {
+  coord.x = new_x;
+}
+
+//　もちろんこの書き方で初めてupdateしている。
+coordinate_t coordinate_update_and_return_x(coordinate_t coord, int new_x) {
+  coord.x = new_x;
+  return coord;
+}
+```
